@@ -1,37 +1,20 @@
+import AdmZip from "adm-zip";
+
 import fs from "fs";
 import https from "node:https";
 import path from "node:path";
 
 import getRelease from "./get-release.js";
+import getFileNamesFromOptions from "./get-file-names-from-options.js";
 import headers from "./headers.js";
 
-// the default release date in case the github lookup fails
-const defaultRelease = "2023d";
-
-interface RefreshOptions{
-	// should oceans be included in the geojson? default: true
-	includeOceans?: boolean;
-	// release id. if not set, get it from github or fallback to default
-	release?: string;
-	// release type. for values, see https://github.com/evansiroky/timezone-boundary-builder. default: "all"
-	releaseType?: "1970" | "all" | "now";
-}
-
-export default async function refresh(options?: RefreshOptions){
-	let release: string;
-	// use supplied release id
-	if(options?.release) release = options.release;
-	// get release id from github if possible, otherwise set to default
-	else await getRelease().then((r: string) => {
-		release = r;
-	}).catch(() => {
-		release = defaultRelease;
-	});
-	// get release url
-	const oceanText = (options?.includeOceans ?? true) ? "-with-oceans" : "";
-	const releaseType = options?.releaseType ?? "all";
-	const typeText = releaseType === "1970" ? "-1970" : (releaseType === "now" ? "-now" : "");
-	const fileUrl = `https://github.com/evansiroky/timezone-boundary-builder/releases/download/${release}/timezones${oceanText}${typeText}.geojson.zip`;
+export default async function refresh(options?: RefreshOptions): Promise<void>{
+	options = options ?? {};
+	// get release id
+	const release = await getRelease(options.release);
+	// get release names
+	const fileNames = getFileNamesFromOptions({...options, release});
+	console.log(fileNames);
 
 	// get zip file final url
 	// relies on having a single redirect, which may not always be true
@@ -39,7 +22,7 @@ export default async function refresh(options?: RefreshOptions){
 	// in order to have a reduced dependency count
 	const finalUrl = await new Promise((resolve, reject) => {
 		https.get(
-			fileUrl,
+			fileNames.url,
 			{headers},
 			(res) => {
 				if(res.statusCode === 302) resolve(res.headers.location);
@@ -49,26 +32,36 @@ export default async function refresh(options?: RefreshOptions){
 	}).catch((e) => console.warn(e));
 
 	// create a placeholder file for our binaries
-	const zipFileName = `tmp-${Date.now()}.zip`;
-	const stream = fs.createWriteStream(path.resolve(__dirname, zipFileName));
+	const resolvedFileName = path.resolve(__dirname, fileNames.zip);
+	const stream = fs.createWriteStream(resolvedFileName, {flags: "a", encoding: null});
 	// actually download the final url
 	await new Promise((resolve, reject) => {
 		https.get(
 			finalUrl,
-			{headers},
+			{headers, encoding: null},
 			(res) => {
+				// ensure that data is binary
+				res.setEncoding("binary");
 				if(res.statusCode !== 200) reject("Failed to download new timezone boundary file");
-				res.on("data", data => {
-					console.log(data);
-					stream.write(data)
-				});
+				// data error fixes, as per https://stackoverflow.com/a/49600958
+				let chunks: Buffer[] = [];
+				res.on("data", data => chunks.push(Buffer.from(data, "binary")));
 				res.on("end", () => {
+					stream.write(Buffer.concat(chunks));
+					// end write stream
 					stream.end();
+					// unzip the file
+					const zip = new AdmZip(resolvedFileName);
+					const boundaries = JSON.parse(zip.readAsText(fileNames.unzipped));
+					console.log(boundaries);
+					// remove file
+					fs.unlink(resolvedFileName, () => null);
 					resolve();
 				});
 			}
 		);
 	});
-	
-	// unzip the file
+	return Promise.resolve();
 }
+
+refresh({since: "1970", includeOceans: false});
