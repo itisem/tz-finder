@@ -6,7 +6,7 @@
 
 tz-finder uses data from Evan Siroky's [Timezone Boundary Builder](https://github.com/evansiroky/timezone-boundary-builder) project. In particular, this library uses the version with all timezones, including ocean borders. This data is then compressed to an accuracy of [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels) 9, which corresponds to an accuracy no worse than 300 metres.
 
-By default, the current version of library ships with the **2023d** dataset which was updated on 29 December, 2023. If this data is too old, or you want to tinker with the settings, see below for how to regenerate the datasets.
+By default, the current version of library ships with the **2023d** dataset which was updated on 29 December 2023. If this data is too old, or you want to tinker with the settings, see below for how to regenerate the datasets.
 
 ### Accuracy
 
@@ -22,5 +22,8 @@ lookup(16.92529, -92.76128); // "America/Mexico_City"
 ### Regenerating the dataset
 
 In certain use cases, you may wish to regenerate the dataset. For instance, if you are shipping the library directly in browsers, it may be worth sacrificing some degree of accuracy, or old timezones that haven't existed for a long while. If so, follow these steps:
+
+* Install the following packages: `npm i -O adm-zip`. They don't ship with the library by default to ensure compactness.
+* Run `refresh/index.ts`
 
 ## Comparison
