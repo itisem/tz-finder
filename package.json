@@ -19,7 +19,7 @@
 		"test": "jest",
 		"cov": "jest --coverage"
 	},
-	"dependencies": {
+	"optionalDependencies": {
 		"adm-zip": "^0.5.10"
 	}
 }
