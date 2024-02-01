@@ -1,11 +1,26 @@
 # tz-finder
 
-**tz-finder** is a light-weight and fast way to get the timezone from any given coordinates. it is highly customisable when it comes to accuracy, it is always up-to-date, and it also runs in the browser!
+**tz-finder** is a light-weight, fast and highly customisable library to get the timezone from any given coordinates. It has full Typescript support, works in the browser, and can be re-generated with newer data at any time.
 
-## usage
+## Data sources
 
+tz-finder uses data from Evan Siroky's [Timezone Boundary Builder](https://github.com/evansiroky/timezone-boundary-builder) project. In particular, this library uses the version with all timezones, including ocean borders. This data is then compressed to an accuracy of [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels) 9, which corresponds to an accuracy no worse than 300 metres.
 
-## comparison
+By default, the current version of library ships with the **2023d** dataset which was updated on 29 December, 2023. If this data is too old, or you want to tinker with the settings, see below for how to regenerate the datasets.
 
+### Accuracy
 
-## data sources
+## Usage
+
+Using this library is extremely simple:
+
+```js
+	import lookup from "tz-finder";
+	lookup(16.92529, -92.76128); // "America/Mexico_City"
+````
+
+### Regenerating the dataset
+
+In certain use cases, you may wish to regenerate the dataset. For instance, if you are shipping the library directly in browsers, it may be worth sacrificing some degree of accuracy, or old timezones that haven't existed for a long while. If so, follow these steps:
+
+## Comparison
