@@ -15,8 +15,8 @@ By default, the current version of library ships with the **2023d** dataset whic
 Using this library is extremely simple:
 
 ```js
-	import lookup from "tz-finder";
-	lookup(16.92529, -92.76128); // "America/Mexico_City"
+import lookup from "tz-finder";
+lookup(16.92529, -92.76128); // "America/Mexico_City"
 ````
 
 ### Regenerating the dataset
