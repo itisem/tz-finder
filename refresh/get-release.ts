@@ -1,5 +1,7 @@
 import https from "node:https";
 
+import headers from "./headers.js";
+
 const rejectMessage = "Error while fetching releases.";
 
 export default async function getRelease(): Promise<string>{
@@ -11,8 +13,8 @@ export default async function getRelease(): Promise<string>{
 			apiUrl,
 			{
 				headers: {
+					...headers,
 					"Accept": "application/vnd.github+json",
-					"User-Agent": "tz-finder Autoupdater",
 					"X-GitHub-Api-Version": "2022-11-28",
 				}
 			},
