@@ -23,7 +23,7 @@ lookup(16.92529, -92.76128); // "America/Mexico_City"
 
 In certain use cases, you may wish to regenerate the dataset. For instance, if you are shipping the library directly in browsers, it may be worth sacrificing some degree of accuracy, or old timezones that haven't existed for a long while. If so, follow these steps:
 
-* Install the following packages: `npm i -O adm-zip`. They don't ship with the library by default to ensure compactness.
+* Install the following packages: `npm i adm-zip minimist @turf/bbox @turf/boolean-point-in-polygon @turf/helpers`. The library doesn't ship with these optional dependencies to ensure compactness, since for most users, regenerating the dataset is not required.
 * Run `refresh/index.ts`
 
 ## Comparison

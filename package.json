@@ -20,6 +20,12 @@
 		"cov": "jest --coverage"
 	},
 	"optionalDependencies": {
+		"@turf/bbox": "^6.5.0",
+		"@turf/boolean-point-in-polygon": "^6.5.0",
+		"@turf/helpers": "^6.5.0",
 		"adm-zip": "^0.5.10"
+	},
+	"dependencies": {
+		"@gmaps-tools/tile-coordinates": "^1.0.0"
 	}
 }
