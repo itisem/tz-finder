@@ -1,7 +1,7 @@
 import {defaultRelease} from "./get-release.js";
 
 interface RefreshOptions{
-	// should oceans be included in the geojson? default: true
+	// should oceans be included in the geojson? default: false
 	includeOceans?: boolean;
 	// release id. if not set, get it from github or fallback to default
 	release?: string;
@@ -19,7 +19,7 @@ export default function getFileNamesFromOptions(options?: RefreshOptions): FileN
 	// set default release again, if something somehow broke greatly
 	const release = options?.release ?? defaultRelease;
 	// if oceans are included, "-with-oceans" is appended, otherwise, nothing is
-	const oceanText = (options?.includeOceans ?? true) ? "-with-oceans" : "";
+	const oceanText = options?.includeOceans ? "-with-oceans" : "";
 	// default to all timezones
 	const since = options?.since ?? "all";
 	// append appropriate text to type names
