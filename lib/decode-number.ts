@@ -11,3 +11,5 @@ export default function decodeNumber(str: string): number{
 	}
 	return num;
 }
+
+export {binaryDigits, startCode};
