@@ -2,6 +2,7 @@ import bbox from "@turf/bbox";
 import pointInPolygon from "@turf/boolean-point-in-polygon";
 import {point, polygon} from "@turf/helpers";
 import {getCenterLatFromTile, getCenterLngFromTile, getTileFromLatLng} from "@gmaps-tools/tile-coordinates";
+import encodeNumber, {binaryDigits} from "../lib/encode-number";
 
 export interface QuantiseOptions{
 	zoom?: number;
@@ -30,7 +31,7 @@ interface TZGeometry{
 
 type Coordinates = ([number, number] | Coordinates)[];
 
-export const defaultZoom = 10;
+export const defaultZoom = 12;
 
 export default function quantise(
 	features: FeatureCollection,
@@ -77,9 +78,9 @@ export default function quantise(
 	}
 
 	// use fixed size entries for calculations
-	const ln36 = Math.log(36); // base 36 since this can do parseInt and is equally compact for zoom level 10 as base 64
-	const indexSize = Math.ceil(Math.log(rows) / ln36);
-	const timezoneSize = Math.ceil(Math.log(features.features.length) / ln36);
+	const ln = Math.log(1 << binaryDigits); // base 36 since this can do parseInt and is equally compact for zoom level 10 as base 64
+	const indexSize = Math.ceil(Math.log(rows) / ln);
+	const timezoneSize = Math.ceil(Math.log(features.features.length) / ln);
 
 	// set up ocean timezones if they don't exist yet
 	for(let i = -12; i <= 12; i++){
@@ -165,9 +166,9 @@ export default function quantise(
 			// new timezone, needs adding
 			if(currentTimezone !== lastTimezone){
 				// first, add index representation
-				quantisation[i] += j.toString(36).padStart(indexSize, "0");
+				quantisation[i] += encodeNumber(j, indexSize);
 				// then, add timezone representation
-				quantisation[i] += currentTimezone.toString(36).padStart(timezoneSize, "0");
+				quantisation[i] += encodeNumber(currentTimezone, timezoneSize);
 			}
 			lastTimezone = currentTimezone;
 			// otherwise, we can just proceed to the next one
