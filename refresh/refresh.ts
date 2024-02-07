@@ -79,10 +79,10 @@ export default async function refresh(options?: FullRefreshOptions): Promise<voi
 					// write code
 					fs.writeFileSync(codeFileName,
 						"export default const a = {" +
-						"t:" + ${JSON.stringify(quantisation.timezones)} +
-						",l: " + ${JSON.stringify(quantisation.quantisation)} +
-						",i: " + quantisation.indexSize.toString() +
-						",z" : quantisation.timezoneSize.toString() + "}"
+						+ "t:" + JSON.stringify(quantisation.timezones) +
+						+ ",l: " + JSON.stringify(quantisation.quantisation) +
+						+ ",i: " + quantisation.indexSize.toString() +
+						+ ",z" : quantisation.timezoneSize.toString() + "}"
 					);
 					console.log(`Finished timezone update (total: ${timer.overall}s)`);
 					resolve();
