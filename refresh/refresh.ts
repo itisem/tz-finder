@@ -4,7 +4,7 @@ import fs from "fs";
 import https from "node:https";
 import path from "node:path";
 
-import quantise, {QuantiseOptions, TZFeatureCollection} from "./quantise.js";
+import quantise, {defaultZoom, QuantiseOptions, TZFeatureCollection} from "./quantise.js";
 import getRelease from "./get-release.js";
 import getFileNamesFromOptions, {RefreshOptions} from "./get-file-names-from-options.js";
 import headers from "./headers.js";
@@ -79,10 +79,11 @@ export default async function refresh(options?: FullRefreshOptions): Promise<voi
 					// write code
 					fs.writeFileSync(codeFileName,
 						"export default const a = {" +
-						+ "t:" + JSON.stringify(quantisation.timezones) +
-						+ ",l: " + JSON.stringify(quantisation.quantisation) +
-						+ ",i: " + quantisation.indexSize.toString() +
-						+ ",z" + quantisation.timezoneSize.toString() + "}"
+						"timezones:" + JSON.stringify(quantisation.timezones) +
+						",lookup:" + JSON.stringify(quantisation.quantisation) +
+						",idxLen:" + quantisation.indexSize.toString() +
+						",tzLen:" + quantisation.timezoneSize.toString() +
+						",zoom:" + (options.zoom ?? defaultZoom).toString() + "}"
 					);
 					console.log(`Finished timezone update (total: ${timer.overall}s)`);
 					resolve();

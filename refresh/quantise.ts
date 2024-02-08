@@ -31,7 +31,7 @@ interface TZGeometry{
 
 type Coordinates = ([number, number] | Coordinates)[];
 
-export const defaultZoom = 12;
+export const defaultZoom = 10;
 
 export default function quantise(
 	features: FeatureCollection,
@@ -197,7 +197,8 @@ function quantisationHelper(
 			if(pointInPolygon(
 				point([lngCentre[i] as number, latCentre[j] as number]),
 				poly
-			)) quantisation[i][j].add(polygonIndex);
+			)) quantisation[j][i].add(polygonIndex);
+			// intentionally indexing the wrong way since it allows for more compact data
 		}
 	}
 	return quantisation;
