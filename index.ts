@@ -5,22 +5,22 @@ import {getTileFromLatLng} from "@gmaps-tools/tile-coordinates";
 export default function getTimezone(
 	lat: number,
 	lng: number,
-	tz?: {timezones: string[], lookup: string[], tzLen: number, idxLen: number, zoom: number}
+	tz?: {timezones: string[], lookup: [string, string][], tzLen: number, idxLen: number, zoom: number}
 ): string{
 	tz = tz ?? tzInfo;
 	const {timezones, lookup, tzLen, idxLen, zoom} = tz;
 	const tile = getTileFromLatLng({lat, lng}, zoom);
-	const unitLen = tzLen + idxLen;
+
+	const idxLookup = lookup[tile.x][0];
 
 	const findTile = (searchIndex: number) => decodeNumber(
-		lookupLine.substring(unitLen * searchIndex, unitLen * searchIndex + idxLen)
+		idxLookup.substring(idxLen * searchIndex, idxLen * (searchIndex +1))
 	);
 
 	// get the actual tile information
-	const lookupLine = lookup[tile.x];
 	const lookupTile = tile.y;
 	let searchStart = 0; // where the tile may be found (start)
-	let searchEnd = lookupLine.length / unitLen - 1; // where the tile may be found (end)
+	let searchEnd = idxLookup.length / idxLen - 1; // where the tile may be found (end)
 	let tileStart = 0; // what tile it may be (start)
 	let tileEnd = findTile(searchEnd);
 	// fast special cases
@@ -62,6 +62,6 @@ export default function getTimezone(
 		}
 	}
 	// use searchStart (which is the same as searchEnd) as our tile id, and look up timezone id based on that
-	const timezoneId = decodeNumber(lookupLine.substring(unitLen * searchStart + idxLen, unitLen * (searchStart + 1)));
+	const timezoneId = decodeNumber(lookup[tile.x][1].substring(tzLen * searchStart, tzLen * (searchStart + 1)));
 	return timezones[timezoneId] as string;
 }

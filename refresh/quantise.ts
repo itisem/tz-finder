@@ -92,11 +92,11 @@ export default function quantise(
 	}
 	
 	// fix the geojson and create a final quantisation table
-	let quantisation: string[] = [];
+	let quantisation: [string, string][] = [];
 	for(let i = 0; i < rows; i++){
 		const row = basicQuantisation[i]
 		// set up quantisation row
-		quantisation.push("");
+		quantisation.push(["",""]);
 
 		// setting up helpers
 		let lastTimezone = -1;
@@ -166,9 +166,9 @@ export default function quantise(
 			// new timezone, needs adding
 			if(currentTimezone !== lastTimezone){
 				// first, add index representation
-				quantisation[i] += encodeNumber(j, indexSize);
+				quantisation[i][0] += encodeNumber(j, indexSize);
 				// then, add timezone representation
-				quantisation[i] += encodeNumber(currentTimezone, timezoneSize);
+				quantisation[i][1] += encodeNumber(currentTimezone, timezoneSize);
 			}
 			lastTimezone = currentTimezone;
 			// otherwise, we can just proceed to the next one

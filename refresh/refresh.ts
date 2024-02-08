@@ -78,12 +78,12 @@ export default async function refresh(options?: FullRefreshOptions): Promise<voi
 					const codeFileName = path.resolve(__dirname, "../timezone-information.js");
 					// write code
 					fs.writeFileSync(codeFileName,
-						"export default const a = {" +
+						"const a = {" +
 						"timezones:" + JSON.stringify(quantisation.timezones) +
 						",lookup:" + JSON.stringify(quantisation.quantisation) +
 						",idxLen:" + quantisation.indexSize.toString() +
 						",tzLen:" + quantisation.timezoneSize.toString() +
-						",zoom:" + (options.zoom ?? defaultZoom).toString() + "}"
+						",zoom:" + (options.zoom ?? defaultZoom).toString() + "}; export default a;"
 					);
 					console.log(`Finished timezone update (total: ${timer.overall}s)`);
 					resolve();
