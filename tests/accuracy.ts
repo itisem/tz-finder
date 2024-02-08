@@ -34,6 +34,6 @@ for(let i = 0; i < trials; i++){
 }
 
 console.log(`${trials} trials:`);
-console.log(`geo-tz: 100% accuracy, ${times.geotz} seconds`);
-console.log(`tz-lookup: ${Math.round(accuracy.tzfinder / trials * 10000) / 100}% accuracy, ${Math.round(times.tzfinder * 1000) / 1000} seconds`);
-console.log(`tz-finder: ${Math.round(accuracy.tzlookup / trials * 10000) / 100}% accuracy, ${Math.round(times.tzlookup * 1000) / 1000} seconds`);
+console.log(`geo-tz: 100% accuracy, ${trials / times.geotz} lookups / second`);
+console.log(`tz-lookup: ${Math.round(accuracy.tzfinder / trials * 10000) / 100}% accuracy, ${trials / times.tzfinder} lookups / second`);
+console.log(`tz-finder: ${Math.round(accuracy.tzlookup / trials * 10000) / 100}% accuracy, ${trials / times.tzlookup} lookups / second`);
