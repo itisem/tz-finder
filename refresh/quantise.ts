@@ -197,8 +197,7 @@ function quantisationHelper(
 			if(pointInPolygon(
 				point([lngCentre[i] as number, latCentre[j] as number]),
 				poly
-			)) quantisation[j][i].add(polygonIndex);
-			// intentionally indexing the wrong way since it allows for more compact data
+			)) quantisation[i][j].add(polygonIndex);
 		}
 	}
 	return quantisation;
