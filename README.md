@@ -32,9 +32,9 @@ In certain use cases, you may wish to regenerate the dataset. For instance, if y
 
 | Library                         | Accuracy | Lookups / second | Database size |
 | ------------------------------- | -------: | ---------------: | ------------: |
-| **tz-finder**                   |  91.79%  |  567214          | 83.4 kB       |
-| **geo-tz** & **browser-geo-tz** | 100.00%  |  283687          | 65.5 MB       |
-| **@photostructure/tz-lookup**   |  67.43%  | 6410256          | 71.6 kB       |
+| **tz-finder**                   |  91.80%  |  753012          | 82.7 kB       |
+| **geo-tz** & **browser-geo-tz** | 100.00%  |  284656          | 65.5 MB       |
+| **@photostructure/tz-lookup**   |  67.39%  | 5464480          | 71.6 kB       |
 
 *(results based on 10 million randomly generated coordinates on my i5-11400F)*
 

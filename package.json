@@ -9,7 +9,7 @@
 		"@babel/preset-env": "^7.23.9",
 		"@babel/preset-typescript": "^7.23.3",
 		"@photostructure/tz-lookup": "^9.0.1",
-		"@types/jest": "^29.5.11",
+		"@types/jest": "^29.5.12",
 		"babel-jest": "^29.7.0",
 		"babel-plugin-remove-import-js-extension": "^0.0.3",
 		"geo-tz": "^8.0.1",
@@ -28,6 +28,6 @@
 		"adm-zip": "^0.5.10"
 	},
 	"dependencies": {
-		"@gmaps-tools/tile-coordinates": "^1.0.0"
+		"@gmaps-tools/tile-coordinates": "^1.1.0"
 	}
 }

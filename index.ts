@@ -12,8 +12,9 @@ export default function getTimezone(
 	const tile = getTileFromLatLng({lat, lng}, zoom);
 	const unitLen = tzLen + idxLen;
 
-	const findTile = (searchIndex: number) => decodeNumber(
-		lookupLine.substring(unitLen * searchIndex, unitLen * searchIndex + idxLen)
+	const findTile = (searchIndex: number) => parseInt(
+		lookupLine.substring(unitLen * searchIndex, unitLen * searchIndex + idxLen),
+		36
 	);
 
 	// get the actual tile information
@@ -46,7 +47,6 @@ export default function getTimezone(
 
 		// get what tile it is
 		const searchTile = findTile(searchIndex);
-		//console.log({searchStart, searchEnd, tileEnd, tileStart, searchIndex, searchTile, lat, lng, lookupTile});
 		switch(Math.sign(lookupTile - searchTile)){
 			case -1: // the tile is lower than searchTile
 				tileEnd = searchTile;
@@ -62,6 +62,6 @@ export default function getTimezone(
 		}
 	}
 	// use searchStart (which is the same as searchEnd) as our tile id, and look up timezone id based on that
-	const timezoneId = decodeNumber(lookupLine.substring(unitLen * searchStart + idxLen, unitLen * (searchStart + 1)));
+	const timezoneId = parseInt(lookupLine.substring(unitLen * searchStart + idxLen, unitLen * (searchStart + 1)), 36);
 	return timezones[timezoneId] as string;
 }

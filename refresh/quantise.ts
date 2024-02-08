@@ -2,7 +2,6 @@ import bbox from "@turf/bbox";
 import pointInPolygon from "@turf/boolean-point-in-polygon";
 import {point, polygon} from "@turf/helpers";
 import {getCenterLatFromTile, getCenterLngFromTile, getTileFromLatLng} from "@gmaps-tools/tile-coordinates";
-import encodeNumber, {binaryDigits} from "../lib/encode-number";
 
 export interface QuantiseOptions{
 	zoom?: number;
@@ -78,7 +77,7 @@ export default function quantise(
 	}
 
 	// use fixed size entries for calculations
-	const ln = Math.log(1 << binaryDigits); // base 36 since this can do parseInt and is equally compact for zoom level 10 as base 64
+	const ln = Math.log(36); // base 36 since this can do parseInt and is equally compact for zoom level 10 as base 64
 	const indexSize = Math.ceil(Math.log(rows) / ln);
 	const timezoneSize = Math.ceil(Math.log(features.features.length) / ln);
 
@@ -166,9 +165,9 @@ export default function quantise(
 			// new timezone, needs adding
 			if(currentTimezone !== lastTimezone){
 				// first, add index representation
-				quantisation[i] += encodeNumber(j, indexSize);
+				quantisation[i] += j.toString(36).padStart(indexSize, "0");
 				// then, add timezone representation
-				quantisation[i] += encodeNumber(currentTimezone, timezoneSize);
+				quantisation[i] += currentTimezone.toString(36).padStart(timezoneSize, "0");
 			}
 			lastTimezone = currentTimezone;
 			// otherwise, we can just proceed to the next one
