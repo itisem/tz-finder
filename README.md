@@ -26,9 +26,9 @@ In certain use cases, you may wish to regenerate the dataset. For instance, if y
 * Install the following packages: `npm i adm-zip @turf/bbox @turf/boolean-point-in-polygon @turf/helpers`. The library doesn't ship with these optional dependencies to ensure compactness, since for most users, regenerating the dataset is not required.
 * Run `refresh/index.ts`
 
-## Comparison
+## Comparison with other libraries
 
-**tz-finder** is a middle ground between the small, but inaccurate @photostructure/tz-lookup, and the large, but accurate geo-tz library. It trades some speed for efficiency:
+**tz-finder** is a middle ground between the small, but inaccurate @photostructure/tz-lookup, and the large, but accurate geo-tz library:
 
 | Library                         | Accuracy | Lookups / second | Database size |
 | ------------------------------- | -------: | ---------------: | ------------: |
